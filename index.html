@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Teste com Facebook</title>
+</head>
+
+<body>
+    <div class="fb-login-button" data-max-rows="1" data-size="large" data-button-type="continue_with" data-show-faces="false" data-auto-logout-link="false" data-use-continue-as="false"scope="public_profile,email,user_likes" onlogin="checkLoginState();"></div>
+    <fb:login-button scope="public_profile,email,user_likes" onlogin="checkLoginState();">
+    </fb:login-button>
+</body>
+<script>
+    window.fbAsyncInit = function () {
+        FB.init({
+            appId: 'ID DA API',
+            cookie: true,
+            xfbml: true,
+            version: 'v3.2'
+        });
+    };
+
+    (function (d, s, id) {
+        var js, fjs = d.getElementsByTagName(s)[0];
+        if (d.getElementById(id)) { return; }
+        js = d.createElement(s); js.id = id;
+        js.src = "https://connect.facebook.net/en_US/sdk.js";
+        fjs.parentNode.insertBefore(js, fjs);
+    }(document, 'script', 'facebook-jssdk'));
+
+    function checkLoginState() {
+        FB.getLoginStatus(function (response) {
+            statusChangeCallback(response);
+        });
+    }
+
+    function statusChangeCallback(response){
+        if(response.status === "connected"){
+            alert("Conectado!");
+            FB.api("me?fields=id,name,email,likes.limit(100){name,link,fan_count,picture}",
+                function(response){
+                    if(response)
+                        console.log(response);
+                }
+            );
+        }
+        else
+            alert("Não Autorizado");
+    }
+
+</script>
+
+</html>
